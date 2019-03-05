@@ -121,8 +121,7 @@ trap 'onExit' EXIT
 echo -e "\n* Starting stele-lite installation"
 
 # if the password hasn't yet been changed, prompt the user to change it.
-if [ ! -f "${DIR}/passwordChanged" ]
-then
+if [ ! -f "${DIR}/passwordChanged" ] && [[ $USER = 'pi' ]]; then
   echo -e "\n** Set new password for user 'pi':"
   passwd
   sudo touch "${DIR}/passwordChanged"
@@ -179,12 +178,12 @@ if [[ ! -d "stele-lite" ]]; then
   waitForNetwork
   echo  -e "\n** Cloning the repository..."
   git clone --recurse-submodules https://github.com/scimusmn/stele-lite.git
-  ln -s /usr/local/src/stele-lite ~/Application
+  ln -s /usr/local/src/stele-lite ~/application
 fi
 
 cd stele-lite
 
-sudo mkdir -p /usr/local/src/stele-lite/current
+mkdir -p /usr/local/src/stele-lite/current
 
 echo  -e "\n** Installing node dependencies for stele-lite:"
 
@@ -202,6 +201,47 @@ while [[ $(npm i 2> >( tee -a ${OUTPUT} | grep -o -i -m 1 'ERR!')) = 'ERR!' ]]; 
 done
 
 doneWorking
+
+echo  -e "\n** Checking if ${flags['r']} is installed..."
+
+
+if [ -d "app" ] && [[ ! $(cd app; git remote -v) =~ "https://github.com/${flags['u']}/${flags['r']}" ]]; then
+  sudo rm -rf app
+fi
+
+if [[ ! -d "app" ]]; then
+  echo  -e "\n** Installing ${flags['r']}..."
+
+  startWorking
+
+  waitForNetwork
+
+  git clone  --recurse-submodules "https://github.com/${flags['u']}/${flags['r']}" app > /dev/null 2>&1
+
+  doneWorking
+
+  if [[ -f "app/aux_install.sh" ]]; then
+    bash app/aux_install.sh $OUTPUT
+  fi
+  cd app
+
+  echo  -e "\n** Installing node dependencies for ${flags['r']}:"
+
+  startWorking
+  while [[ $(npm i 2> >( tee -a ${OUTPUT} | grep -o -i -m 1 'ERR!')) = 'ERR!' ]]; do
+    doneWorking
+    echo -e "\033[0;33m"
+    echo -e "\nErrors while trying to install packages, retrying..."
+    waitForNetwork
+    echo -e "\033[0m"
+    startWorking
+  done
+  doneWorking
+
+  cd ../
+
+  touch current/appReady
+fi
 
 echo  -e "\n** Configuring machine..."
 
