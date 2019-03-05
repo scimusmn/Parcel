@@ -254,7 +254,8 @@ if [[ ! -z "${flags["s"]}" ]]; then
   SETUP_DIR="${flags["s"]}"
 fi
 
-sudo node install.js --config-only --setup-dir "${SETUP_DIR}" --repo "${flags["r"]}" --account "${flags["u"]}" --user "$USER"
+#--repo "${flags["r"]}" --account "${flags["u"]}"
+sudo node install.js --config-only --setup-dir "${SETUP_DIR}" --user "$USER"
 
 # Restart the computer after the script finishes.
 echo -e "\n**********************************************************"
