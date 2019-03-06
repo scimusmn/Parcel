@@ -1,12 +1,12 @@
-**Stele-lite**
+# Stele-lite
 
 Electron kiosk application wrapper and machine configuration suite for minimal linux machines.
 
-**Overview**
+## Overview
 
 This is a simple wrapper application to manage the complete lifecycle of an electron application on a barebones Debian-based linux machine. It supports multiple monitors using either local or network content. It has a number of different configuration options, ranging from setting up wifi connections, static IP addresses, and creating Wifi Hotspots to managing soft shutdowns of the hardware after power loss using a battery backup. These configuration options are detailed below.
 
-**Features**
+## Features
 
 _<span style="text-decoration:underline;">Single Command Installation</span>_: This package enables any network-connected debian-based machine to be configured with a single command, detailed below. This process installs the electron wrapper, and then installs a specified github repository as the 'app', which contains all of the application specific customizations. 
 
@@ -18,7 +18,7 @@ _<span style="text-decoration:underline;">USB updating</span>_: The configurator
 
 _<span style="text-decoration:underline;">Keystroke Logging</span>_: The configurator service also runs a system level keystroke logger, which will monitor the keypresses from any USB keyboard, and executes commands based on that input. By default, the logger will stop the electron service when the 'escape' and 'left control' keys are pressed at the same time. These commands can be customized by adding directives to the 'keystroke.js' file in the 'app/config' folder.
 
-**Setup**
+## Setup
 
 Setup of the machine is meant to be a simple, one-command installation. See below for installation instructions for various machine types.
 
@@ -49,7 +49,7 @@ _<span style="text-decoration:underline;">Ubuntu 18.04 Server</span>_
 4. After installation, start the machine, and login with the credentials defined in the installation process.
 5. Run this command in the terminal prompt: 'bash <(curl -sL [http://bit.ly/stele-](http://bit.ly/stele-lite)net) -u USERNAME -r REPO'
 
-**Configuration**
+## Configuration
 
 All of the configuration options for the stele-lite wrapper are made from the individual application's config folder. This is done so that each app can carry it's particular machine setup instructions. These configuration options are detailed below.
 
