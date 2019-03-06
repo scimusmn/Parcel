@@ -16,6 +16,8 @@ _<span style="text-decoration:underline;">Machine Configuration</span>_: The ste
 
 _<span style="text-decoration:underline;">USB updating</span>_: The configurator system service also manages an update system for the app using USB drives. When a USB drive is inserted into the host computer, it is automatically mounted, and the root directory is scanned for a folder called 'update'. If it is found, it loads 'update.js' from that folder, which contains a manafest of directories and files to be updated. The program will recurse through this list of files and copy the specified files from the USB drive to the corresponding location in the app folder. After copying the files, the service automatically ejects the USB drive, and reloads the electron application.
 
+_<span style="text-decoration:underline;">Git Repo Monitoring</span>_: The configurator can also optionally enable a system service which automatically checks for changes on the master branch of the application github repository. When enabled, the service checks the repository for new commits every 30 seconds, and automatically pulls them (and updates any submodules) if found. After the application files are updated, the service automatically restarts the electron service.
+
 _<span style="text-decoration:underline;">Keystroke Logging</span>_: The configurator service also runs a system level keystroke logger, which will monitor the keypresses from any USB keyboard, and executes commands based on that input. By default, the logger will stop the electron service when the 'escape' and 'left control' keys are pressed at the same time. These commands can be customized by adding directives to the 'keystroke.js' file in the 'app/config' folder.
 
 ## Setup
