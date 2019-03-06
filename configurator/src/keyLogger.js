@@ -95,7 +95,7 @@ var keys = {
   KP0: 82,
   KPDOT: 83,
   ZENKAKUHANKAKU: 85,
-  102ND: 86,
+  ND: 86,
   F11: 87,
   F12: 88,
   RO: 89,
