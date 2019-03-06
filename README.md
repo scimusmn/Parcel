@@ -29,11 +29,11 @@ _<span style="text-decoration:underline;">Raspberry Pi:</span>_
 1. Obtain a Raspberry Pi 3 B+. The software will work on older models, but to use all of the features, the Raspberry Pi 3 B+ will give you the best results.
 2. Using Etcher, burn an SD card (minimum 4GB) with the [November 2018 version of Raspbian Stretch Lite](https://downloads.raspberrypi.org/raspbian_lite_latest).
 3. Arrange for Network connection.
-    1. Wifi:
+    1. **Wifi**:
         1. Once the card is written, re-insert it into your computer, and a drive named 'boot' should appear.
         2. If you wish to configure the Pi wifi connection, drop the contents of the ['pi boot directory' folder](https://github.com/scimusmn/stele-lite/tree/master/install/pi%20boot%20directory) into the '/boot/' folder. The .conf file in the wifi folder is a template for a PEAP secured network. Fill this file in with the relevant network details. For more information about the wpa_supplicant.conf file, see [this link](https://linux.die.net/man/5/wpa_supplicant.conf).
         3. After booting the machine and logging in, run '/boot/wifi/setup.sh'. If the wpa_supplicant file is correct, the Pi should connect to wifi within ~10 seconds.
-    2. If not using the wifi connection, plug the Raspberry Pi into an active ethernet connection.
+    2. **Wired** If not using the wifi connection, plug the Raspberry Pi into an active ethernet connection.
 4. Eject the SD card from your computer, insert it into the Raspberry Pi, and plug in power.
 5. Once the machine has booted, log in using the default credentials.
 6. After logging in, run the following command: 'bash <(curl -sL bit.ly/stele-net) -r REPO -u USER', where REPO is the repository name, and USER is the github user name that owns the repository.
