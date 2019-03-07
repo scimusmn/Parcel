@@ -63,6 +63,8 @@ waitForNetwork ()
   fi
 }
 
+echo $OPTS
+
 # start the working indicator and store the process number
 startWorking()
 {
