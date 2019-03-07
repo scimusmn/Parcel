@@ -158,6 +158,10 @@ sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install libgtk-3-0 > ${OUTPUT} 
 
 sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install git libudev-dev > ${OUTPUT} 2>&1
 
+sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install git xauth > ${OUTPUT} 2>&1
+
+sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install git xorg > ${OUTPUT} 2>&1
+
 sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install build-essential hostapd dnsmasq network-manager xserver-xorg xinit xserver-xorg-video-fbdev libxss1 libgconf-2-4 libnss3 git nodejs libgtk2.0-0 libxtst6  > ${OUTPUT} 2>&1
 
 sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install libasound2 > ${OUTPUT} 2>&1
@@ -254,7 +258,8 @@ if [[ ! -z "${flags["s"]}" ]]; then
   SETUP_DIR="${flags["s"]}"
 fi
 
-sudo node install.js --config-only --setup-dir "${SETUP_DIR}" --repo "${flags["r"]}" --account "${flags["u"]}" --user "$USER"
+#--repo "${flags["r"]}" --account "${flags["u"]}"
+sudo node install.js --config-only --setup-dir "${SETUP_DIR}" --user "$USER"
 
 # Restart the computer after the script finishes.
 echo -e "\n**********************************************************"

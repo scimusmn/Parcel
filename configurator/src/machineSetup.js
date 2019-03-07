@@ -33,7 +33,7 @@ var obs = [
   'os',
 ];
 
-obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, fs, { keyboards }, usbDrive, { exec, execSync }, os)=> {
+obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, fs, { keyboards: kbds }, usbDrive, { exec, execSync }, os)=> {
 
   if (process.platform == 'linux' && fs.existsSync('/boot/SAFEMODE')) {
     console.log('Starting in safemode; exiting application.');
@@ -216,10 +216,10 @@ obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, 
     var combos = require(`${bundleRoot}/app/config/keystroke.js`).key_functions;
   }
 
-  keyboards.on('keydown', (code, states)=> {
+  kbds.on('keydown', (code, states)=> {
     if (combos) {
-      combos.forEach((cmb)=>cmb(code, states));
-    } else if (states[1] && states[29]) services.stop('electron');
+      combos.forEach((cmb)=>cmb(code, states, kbds.keys));
+    } else if (kbds.keys.ESC && kbds.keys.LEFTCTRL) services.stop('electron');
 
   });
 
