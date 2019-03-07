@@ -5,39 +5,39 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 OUTPUT="${HOME}/stele_install.log"
 
-declare -A flags
-declare -A booleans
-args=()
-
-while [ "$1" ];
-do
-    arg=$1
-    #if the next opt starts with a '-'
-    if [ "${1:0:1}" == "-" ]
-    then
-      # move to the next opt
-      shift
-      rev=$(echo "$arg" | rev) #reverse the string
-
-      #if the next opt is not empty, or begins with a '-', or this opt ends in a ':'
-      if [ -z "$1" ] || [ "${1:0:1}" == "-" ] || [ "${rev:0:1}" == ":" ]
-      then
-        # it is a boolean flag
-        bool=$(echo ${arg:1} | sed s/://g)
-        booleans[$bool]=true
-        #echo \"$bool\" is boolean
-      else
-        # it is a flag with a value
-        value=$1
-        flags[${arg:1}]=$value
-        shift
-      fi
-    else
-      args+=("$arg")
-      shift
-      #echo \"$arg\" is an arg
-    fi
-done
+# declare -A flags
+# declare -A booleans
+# args=()
+#
+# while [ "$1" ];
+# do
+#     arg=$1
+#     #if the next opt starts with a '-'
+#     if [ "${1:0:1}" == "-" ]
+#     then
+#       # move to the next opt
+#       shift
+#       rev=$(echo "$arg" | rev) #reverse the string
+#
+#       #if the next opt is not empty, or begins with a '-', or this opt ends in a ':'
+#       if [ -z "$1" ] || [ "${1:0:1}" == "-" ] || [ "${rev:0:1}" == ":" ]
+#       then
+#         # it is a boolean flag
+#         bool=$(echo ${arg:1} | sed s/://g)
+#         booleans[$bool]=true
+#         #echo \"$bool\" is boolean
+#       else
+#         # it is a flag with a value
+#         value=$1
+#         flags[${arg:1}]=$value
+#         shift
+#       fi
+#     else
+#       args+=("$arg")
+#       shift
+#       #echo \"$arg\" is an arg
+#     fi
+# done
 
 if [[  "${booleans["-debug"]}" = true ]]; then
   echo -e "\nRunning in debug mode."
@@ -158,10 +158,6 @@ sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install libgtk-3-0 > ${OUTPUT} 
 
 sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install git libudev-dev > ${OUTPUT} 2>&1
 
-sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install git xauth > ${OUTPUT} 2>&1
-
-sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install git xorg > ${OUTPUT} 2>&1
-
 sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install build-essential hostapd dnsmasq network-manager xserver-xorg xinit xserver-xorg-video-fbdev libxss1 libgconf-2-4 libnss3 git nodejs libgtk2.0-0 libxtst6  > ${OUTPUT} 2>&1
 
 sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install libasound2 > ${OUTPUT} 2>&1
@@ -225,7 +221,7 @@ if [[ ! -d "app" ]]; then
   doneWorking
 
   if [[ -f "app/aux_install.sh" ]]; then
-    bash app/aux_install.sh "$@" $OUTPUT
+    bash app/aux_install.sh "$@" -o $OUTPUT
   fi
   cd app
 
@@ -258,8 +254,7 @@ if [[ ! -z "${flags["s"]}" ]]; then
   SETUP_DIR="${flags["s"]}"
 fi
 
-#--repo "${flags["r"]}" --account "${flags["u"]}"
-sudo node install.js --config-only --setup-dir "${SETUP_DIR}" --user "$USER"
+sudo node install.js --config-only --setup-dir "${SETUP_DIR}" --repo "${flags["r"]}" --account "${flags["u"]}" --user "$USER"
 
 # Restart the computer after the script finishes.
 echo -e "\n**********************************************************"

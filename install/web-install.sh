@@ -38,6 +38,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ACCOUNT="scimusmn"
 REPO="SteleLite-AppTemplate"
 
+OPTS="$@"
+
 # special thanks to jozsef morrissey: https://stackoverflow.com/questions/14447406/
 declare -A flags
 declare -A booleans
@@ -102,4 +104,4 @@ curl -sL "https://raw.githubusercontent.com/scimusmn/stele-lite/master/install/m
 
 chmod 777 ./install.sh
 
-./install.sh -s /usr/local/src/setup "$@" $DEBUG
+./install.sh -s /usr/local/src/setup "${OPTS}" $DEBUG
