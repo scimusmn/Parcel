@@ -102,4 +102,4 @@ curl -sL "https://raw.githubusercontent.com/scimusmn/stele-lite/master/install/m
 
 chmod 777 ./install.sh
 
-./install.sh -s /usr/local/src/setup -u "$ACCOUNT" -r "$REPO" $DEBUG
+./install.sh -s /usr/local/src/setup "$@" $DEBUG
