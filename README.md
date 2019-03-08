@@ -8,9 +8,9 @@ This is a simple wrapper application to manage the complete lifecycle of an elec
 
 ## Features
 
-_<span style="text-decoration:underline;">Single Command Installation</span>_: This package enables any network-connected debian-based machine to be configured with a single command, detailed below. This process installs the electron wrapper, and then installs a specified github repository as the 'app', which contains all of the application specific customizations. 
+_<span style="text-decoration:underline;">Single Command Installation</span>_: This package enables any network-connected debian-based machine to be configured with a single command, detailed below. This process installs the electron wrapper, and then installs a specified github repository as the 'app', which contains all of the application specific customizations.
 
-_<span style="text-decoration:underline;">Custom Installation Scripts</span>_: Stele-lite will run a custom shell script, named 'aux_install.sh', if it is found in the root directory of the 'app' repository. This allows for installation of additional system level dependencies, and other configuration options. 
+_<span style="text-decoration:underline;">Custom Installation Scripts</span>_: Stele-lite will run a custom shell script, named 'install.sh', if it is found in the config directory of the 'app' repository. This allows for installation of additional system level dependencies, and other configuration options. 
 
 _<span style="text-decoration:underline;">Machine Configuration</span>_: The stele-lite package includes a system service which monitors the config files in the application directory, and configures the computer accordingly. This process runs at each startup, and if it sees any changes to the machine.js file in the app 'config' folder, it makes the changes, and saves the current configuration.
 
@@ -39,7 +39,7 @@ _<span style="text-decoration:underline;">Raspberry Pi:</span>_
 4. Eject the SD card from your computer, insert it into the Raspberry Pi, and plug in power.
 5. Once the machine has booted, log in using the default credentials.
 6. After logging in, run the following command: 'bash <(curl -sL bit.ly/stele-net) -r REPO -u USER', where REPO is the repository name, and USER is the github user name that owns the repository.
-7. Let the installer finish running. It will reboot once it has finished, and automatically start the application. 
+7. Let the installer finish running. It will reboot once it has finished, and automatically start the application.
 
 _<span style="text-decoration:underline;">Ubuntu 18.04 Server</span>_
 
@@ -144,7 +144,7 @@ and autorouting of traffic to 'domainName' to the ip address of this computer.
 <p>
 }
    </td>
-   <td>Connect to a PEAP wifi network, using a username and credentials. Password in this case is the hashed version of the user password, obtained using: 
+   <td>Connect to a PEAP wifi network, using a username and credentials. Password in this case is the hashed version of the user password, obtained using:
 <p>
 <em>echo -n 'password_in_plaintext' | iconv -t utf16le | openssl md4 > hash.txt</em>
    </td>

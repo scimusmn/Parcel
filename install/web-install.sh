@@ -43,7 +43,7 @@ while getopts ':a:r:' option; do
   in
   a) ACCOUNT=${OPTARG};;
   r) REPO=${OPTARG};;
-  ?) echo "${OPTARG}";;
+  ?) echo "Passing ${option} to child scripts";;
   esac
 done
 
