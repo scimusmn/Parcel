@@ -57,7 +57,6 @@ done
 
 if [ ! -z "${flags['a']}" ]; then
   ACCOUNT="${flags['a']}"
-  echo "$ACCOUNT is the account"
 fi
 
 if [ ! -z "${flags['r']}" ]; then
@@ -252,7 +251,7 @@ if [[ ! -d "app" ]]; then
   doneWorking
 
   if [[ -f "app/config/install.sh" ]]; then
-    bash app/config/install.sh "$@" -o $OUTPUT
+    bash app/config/install.sh "$OPTS" -o $OUTPUT
   fi
   cd app
 
