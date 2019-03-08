@@ -38,14 +38,13 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ACCOUNT="scimusmn"
 REPO="SteleLite-AppTemplate"
 
-while getopts :a:r: option
-do
-case "${option}"
-in
-a) ACCOUNT=${OPTARG};;
-r) REPO=${OPTARG};;
-?) echo "${OPTARG}";;
-esac
+while getopts ':a:r:' option; do
+  case "${option}"
+  in
+  a) ACCOUNT=${OPTARG};;
+  r) REPO=${OPTARG};;
+  ?) echo "${OPTARG}";;
+  esac
 done
 
 sudo mkdir -p /usr/local/src/setup

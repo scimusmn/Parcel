@@ -47,15 +47,14 @@ ACCOUNT=''
 REPO=''
 SETUP_DIR="/boot/setup"
 
-while getopts a:r:s:d option
-do
-case "${option}"
-in
-a) ACCOUNT=${OPTARG};;
-r) REPO=${OPTARG};;
-s) SETUP_DIR=${OPTARG};;
-d) OUTPUT="/dev/stdout";;
-esac
+while getopts ':a:r:s:d' option; do
+  case "${option}"
+  in
+  a) ACCOUNT=${OPTARG};;
+  r) REPO=${OPTARG};;
+  s) SETUP_DIR=${OPTARG};;
+  d) OUTPUT="/dev/stdout";;
+  esac
 done
 
 echo "Logging to ${OUTPUT}" > $OUTPUT
