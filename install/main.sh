@@ -251,7 +251,7 @@ if [[ ! -d "app" ]]; then
   doneWorking
 
   if [[ -f "app/config/install.sh" ]]; then
-    bash app/config/install.sh "$OPTS" -o $OUTPUT
+    bash app/config/install.sh $OPTS -o $OUTPUT
   fi
   cd app
 
