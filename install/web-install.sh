@@ -59,5 +59,5 @@ curl -sL "https://raw.githubusercontent.com/scimusmn/stele-lite/master/install/m
 
 chmod 777 ./install.sh
 
-./install.sh -s /usr/local/src/setup -r $REPO -a $ACCOUNT "$@"
+./install.sh -r $REPO -a $ACCOUNT "$@" -s "/usr/local/src/setup"
 #-u "$ACCOUNT" -r "$REPO" $DEBUG
