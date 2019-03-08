@@ -148,12 +148,15 @@ obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, 
 
     if (!configsMatch(curCfg.autostart, pfg.autostart)) {
       console.log('Configuring electron autostart...');
-      if (pfg.autostart) services.configure(
-        'electron',
-        'Autostart main application',
-        `/usr/bin/npm start --prefix ${bundleRoot}`
-      );
-      else if (curCfg.autostart) services.disable('electron');
+
+      if (pfg.autostart) {
+        var env = ((pfg.autostart.env) ? pfg.autostart.env + ' ' : '');
+        services.configure(
+          'electron',
+          'Autostart main application',
+          `${pfg.autostart}/usr/bin/npm start --prefix ${bundleRoot}`
+        );
+      } else if (curCfg.autostart) services.disable('electron');
       curCfg.autostart = pfg.autostart;
     }
 
