@@ -7,44 +7,55 @@ OUTPUT="${HOME}/stele_install.log"
 
 OPTS="$@"
 
-declare -A flags
-declare -A booleans
-args=()
+# declare -A flags
+# declare -A booleans
+# args=()
+#
+# while [ "$1" ];
+# do
+#     arg=$1
+#     #if the next opt starts with a '-'
+#     if [ "${1:0:1}" == "-" ]
+#     then
+#       # move to the next opt
+#       shift
+#       rev=$(echo "$arg" | rev) #reverse the string
+#
+#       #if the next opt is not empty, or begins with a '-', or this opt ends in a ':'
+#       if [ -z "$1" ] || [ "${1:0:1}" == "-" ] || [ "${rev:0:1}" == ":" ]
+#       then
+#         # it is a boolean flag
+#         bool=$(echo ${arg:1} | sed s/://g)
+#         booleans[$bool]=true
+#         #echo \"$bool\" is boolean
+#       else
+#         # it is a flag with a value
+#         value=$1
+#         flags[${arg:1}]=$value
+#         shift
+#       fi
+#     else
+#       args+=("$arg")
+#       shift
+#       #echo \"$arg\" is an arg
+#     fi
+# done
 
-while [ "$1" ];
+ACCOUNT=''
+REPO=''
+SETUP_DIR="/boot/setup"
+
+while getopts a:r:s:d option
 do
-    arg=$1
-    #if the next opt starts with a '-'
-    if [ "${1:0:1}" == "-" ]
-    then
-      # move to the next opt
-      shift
-      rev=$(echo "$arg" | rev) #reverse the string
-
-      #if the next opt is not empty, or begins with a '-', or this opt ends in a ':'
-      if [ -z "$1" ] || [ "${1:0:1}" == "-" ] || [ "${rev:0:1}" == ":" ]
-      then
-        # it is a boolean flag
-        bool=$(echo ${arg:1} | sed s/://g)
-        booleans[$bool]=true
-        #echo \"$bool\" is boolean
-      else
-        # it is a flag with a value
-        value=$1
-        flags[${arg:1}]=$value
-        shift
-      fi
-    else
-      args+=("$arg")
-      shift
-      #echo \"$arg\" is an arg
-    fi
+case "${option}"
+in
+a) ACCOUNT=${OPTARG};;
+r) REPO=${OPTARG};;
+s) SETUP_DIR=${OPTARG};;
+d) OUTPUT="/dev/stdout";;
+esac
 done
 
-if [[  "${booleans["-debug"]}" = true ]]; then
-  echo -e "\nRunning in debug mode."
-  OUTPUT="/dev/stdout"
-fi
 
 #clear the log file
 cat /dev/null > stele_install.log
@@ -206,21 +217,21 @@ done
 
 doneWorking
 
-echo  -e "\n** Checking if ${flags['r']} is installed..."
+echo  -e "\n** Checking if ${REPO} is installed..."
 
 
-if [ -d "app" ] && [[ ! $(cd app; git remote -v) =~ "https://github.com/${flags['u']}/${flags['r']}" ]]; then
+if [ -d "app" ] && [[ ! $(cd app; git remote -v) =~ "https://github.com/${ACCOUNT}/${REPO}" ]]; then
   sudo rm -rf app
 fi
 
 if [[ ! -d "app" ]]; then
-  echo  -e "\n** Installing ${flags['r']}..."
+  echo  -e "\n** Installing ${REPO}..."
 
   startWorking
 
   waitForNetwork
 
-  git clone  --recurse-submodules "https://github.com/${flags['u']}/${flags['r']}" app > /dev/null 2>&1
+  git clone  --recurse-submodules "https://github.com/${ACCOUNT}/${REPO}" app > /dev/null 2>&1
 
   doneWorking
 
@@ -229,7 +240,7 @@ if [[ ! -d "app" ]]; then
   fi
   cd app
 
-  echo  -e "\n** Installing node dependencies for ${flags['r']}:"
+  echo  -e "\n** Installing node dependencies for ${REPO}:"
 
   startWorking
   while [[ $(npm i 2> >( tee -a ${OUTPUT} | grep -o -i -m 1 'ERR!')) = 'ERR!' ]]; do
@@ -253,12 +264,7 @@ cd configurator
 
 # Run the configurator in config-only mode, so that it exits once it completes.
 
-SETUP_DIR="/boot/setup"
-if [[ ! -z "${flags["s"]}" ]]; then
-  SETUP_DIR="${flags["s"]}"
-fi
-
-sudo node install.js --config-only --setup-dir "${SETUP_DIR}" --repo "${flags["r"]}" --account "${flags["u"]}" --user "$USER"
+sudo node install.js --config-only --setup-dir "${SETUP_DIR}" --user "$USER"
 
 # Restart the computer after the script finishes.
 echo -e "\n**********************************************************"

@@ -45,7 +45,7 @@ case "${option}"
 in
 a) ACCOUNT=${OPTARG};;
 r) REPO=${OPTARG};;
-d) DEBUG="true";;
+d) DEBUG="-d";;
 esac
 done
 
@@ -113,5 +113,5 @@ curl -sL "https://raw.githubusercontent.com/scimusmn/stele-lite/master/install/m
 
 chmod 777 ./install.sh
 
-./install.sh -s /usr/local/src/setup "$@"
+./install.sh -s /usr/local/src/setup -r $REPO -a $ACCOUNT "$@"
 #-u "$ACCOUNT" -r "$REPO" $DEBUG

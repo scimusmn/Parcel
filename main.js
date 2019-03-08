@@ -76,6 +76,10 @@ obtain(['path', 'url', 'child_process', 'os'], (path, url, { execSync }, os)=> {
       //playback = null;
     });
 
+    temp.webContents.on('crashed', ()=> {
+      temp.reload();
+    });
+
     return temp;
   };
 
