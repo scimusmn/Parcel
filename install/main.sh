@@ -57,6 +57,7 @@ done
 
 if [ ! -z "${flags['a']}" ]; then
   ACCOUNT="${flags['a']}"
+  echo "$ACCOUNT is the account"
 fi
 
 if [ ! -z "${flags['r']}" ]; then
