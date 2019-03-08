@@ -69,7 +69,7 @@ if [ ! -z "${flags['s']}" ]; then
 fi
 
 if [ "${booleans['-debug']}" = true ]; then
-  OUTPUT="${flags['o']}"
+  OUTPUT="/dev/stdout"
 fi
 
 
