@@ -56,6 +56,7 @@ d) OUTPUT="/dev/stdout";;
 esac
 done
 
+echo "Logging to ${OUTPUT}" > $OUTPUT
 
 #clear the log file
 cat /dev/null > stele_install.log

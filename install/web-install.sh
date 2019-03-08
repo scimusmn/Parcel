@@ -37,15 +37,13 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 ACCOUNT="scimusmn"
 REPO="SteleLite-AppTemplate"
-DEBUG=""
 
-while getopts :a:r:d option
+while getopts :a:r: option
 do
 case "${option}"
 in
 a) ACCOUNT=${OPTARG};;
 r) REPO=${OPTARG};;
-d) DEBUG="-d";;
 ?) echo "${OPTARG}";;
 esac
 done
