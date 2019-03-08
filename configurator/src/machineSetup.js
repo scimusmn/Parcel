@@ -154,7 +154,7 @@ obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, 
         services.configure(
           'electron',
           'Autostart main application',
-          `${pfg.autostart}/usr/bin/npm start --prefix ${bundleRoot}`
+          `${env}/usr/bin/npm start --prefix ${bundleRoot}`
         );
       } else if (curCfg.autostart) services.disable('electron');
       curCfg.autostart = pfg.autostart;
