@@ -7,6 +7,8 @@ OUTPUT="${HOME}/stele_install.log"
 
 OPTS="$@"
 
+echo $OPTS
+
 # declare -A flags
 # declare -A booleans
 # args=()
@@ -74,8 +76,6 @@ waitForNetwork ()
     echo -e "\n** Network connected."
   fi
 }
-
-echo $OPTS
 
 # start the working indicator and store the process number
 startWorking()
