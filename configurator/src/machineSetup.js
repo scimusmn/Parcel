@@ -20,6 +20,7 @@ var firstRun = false;
 
 var obs = [
   `${__dirname}/hotspot.js`,
+  `${__dirname}/wiredRouter.js`,
   `${__dirname}/wifi.js`,
   `${__dirname}/staticIP.js`,
   `${__dirname}/preventSleep.js`,
@@ -33,7 +34,7 @@ var obs = [
   'os',
 ];
 
-obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, fs, { keyboards: kbds }, usbDrive, { exec, execSync }, os)=> {
+obtain(obs, (hotspot, wiredRouter, wifi, staticIP, preventSleep, soft, { config }, services, fs, { keyboards: kbds }, usbDrive, { exec, execSync }, os)=> {
 
   if (process.platform == 'linux' && fs.existsSync('/boot/SAFEMODE')) {
     console.log('Starting in safemode; exiting application.');
@@ -120,6 +121,12 @@ obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, 
       console.log('Configuring wifi hotspot...');
       hotspot.configure(pfg.wifiHotspot);
       curCfg.wifiHotspot = pfg.wifiHotspot;
+    }
+
+    if (pfg.wiredRouter && !configsMatch(curCfg.wiredRouter, pfg.wiredRouter)) {
+      console.log('Configuring wired router...');
+      wiredRouter.configure(pfg.wiredRouter);
+      curCfg.wiredRouter = pfg.wiredRouter;
     }
 
     if (pfg.wifi && !configsMatch(curCfg.wifi, pfg.wifi)) {
