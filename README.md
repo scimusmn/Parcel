@@ -38,9 +38,8 @@ _<span style="text-decoration:underline;">Raspberry Pi:</span>_
     2. **Wired** If not using the wifi connection, plug the Raspberry Pi into an active ethernet connection.
 4. Eject the SD card from your computer, insert it into the Raspberry Pi, and plug in power.
 5. Once the machine has booted, log in using the default credentials.
-6. After logging in, run the following command: 
-```bash <(curl -sL bit.ly/stele-net) -r REPO -u USER```
-where REPO is the repository name, and USER is the github user name that owns the repository.
+6. After logging in, run the following command: ```bash <(curl -sL bit.ly/stele-net) -r REPO -u USER```
+, where REPO is the repository name, and USER is the github user name that owns the repository.
 7. Let the installer finish running. It will reboot once it has finished, and automatically start the application.
 
 _<span style="text-decoration:underline;">Ubuntu 18.04 Server</span>_
@@ -51,8 +50,7 @@ _<span style="text-decoration:underline;">Ubuntu 18.04 Server</span>_
 2. Install the operating system on the target machine.
 3. Connect the target machine to an active ethernet connection, or configure wifi manually.
 4. After installation, start the machine, and login with the credentials defined in the installation process.
-5. Run this command in the terminal prompt: 
-```bash <(curl -sL [http://bit.ly/stele-](http://bit.ly/stele-lite)net) -u USERNAME -r REPO```
+5. Run this command in the terminal prompt: ```bash <(curl -sL bit.ly/stele-net) -u USERNAME -r REPO```
 
 ## Configuration
 
