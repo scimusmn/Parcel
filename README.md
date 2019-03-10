@@ -81,14 +81,10 @@ _<span style="text-decoration:underline;">machine.js</span>:_
    </td>
    <td>Javascript Object:
 <p>
-{
-<p>
-  ssid: string,
-<p>
-  password: string,
-<p>
-  domainName: string
-<p>
+{<br/>
+  ssid: string,<br/>
+  password: string,<br/>
+  domainName: string<br/>
 }
    </td>
    <td>Configures the computer to create a wifi hotspot using 'wlan0', with a SSID of 'ssid', password of 'password',
@@ -99,14 +95,10 @@ and autorouting of traffic to 'domainName' to the ip address of this computer.
   <tr>
    <td>wifi
    </td>
-   <td>Javascript Object:
-<p>
-{
-<p>
-  ssid: string,
-<p>
-  password: string,
-<p>
+   <td>Javascript Object:<br/>
+{<br/>
+  ssid: string,<br/>
+  password: string,<br/>
 }
    </td>
    <td>Configure the computer to join 'ssid' using 'password'.
@@ -133,11 +125,11 @@ and autorouting of traffic to 'domainName' to the ip address of this computer.
    </td>
    <td>Javascript Object:
 <p>
-{
-  ssid: string,
-  user: string,
-  password: string,
-  domainName: string
+{<br/>
+  ssid: string,<br/>
+  user: string,<br/>
+  password: string,<br/>
+  domainName: string<br/>
 }
    </td>
    <td>Connect to a PEAP wifi network, using a username and credentials. Password in this case is the hashed version of the user password, obtained using:
@@ -156,12 +148,11 @@ and autorouting of traffic to 'domainName' to the ip address of this computer.
   <tr>
    <td>softShutdown
    </td>
-   <td>Javascript Object:
-<p>
-{
-  monitorPin: number,
-  controlPin: number,
-  delayTime: number,
+   <td>Javascript Object:<br/>
+{<br/>
+  monitorPin: number,<br/>
+  controlPin: number,<br/>
+  delayTime: number,<br/>
 }
    </td>
    <td>Configures a battery-backup enabled softshutdown. 'delayTime' milliseconds after the computer sees the voltage on 'monitorPin' go to zero, the computer will shutdown, and cause 'controlPin' to go high. Pin numbers are specified in BCM pin numbers.
@@ -272,11 +263,10 @@ _<span style="text-decoration:underline;">Window Config Object for app.js</span>
   <tr>
    <td>size
    </td>
-   <td>Object:
-<p>
-{
-  height: number,
-  width: number
+   <td>Object:<br/>
+{<br/>
+  height: number,<br/>
+  width: number<br/>
 }
    </td>
    <td>Size, in pixels to draw the window, if not fullscreen.
@@ -285,11 +275,10 @@ _<span style="text-decoration:underline;">Window Config Object for app.js</span>
   <tr>
    <td>position
    </td>
-   <td>Object:
-<p>
-{
-  x: number,
-  y: number
+   <td>Object:<br/>
+{<br/>
+  x: number,<br/>
+  y: number<br/>
 }
    </td>
    <td>Coordinates, in pixels, to display the window.
