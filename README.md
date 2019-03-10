@@ -134,15 +134,10 @@ and autorouting of traffic to 'domainName' to the ip address of this computer.
    <td>Javascript Object:
 <p>
 {
-<p>
   ssid: string,
-<p>
   user: string,
-<p>
   password: string,
-<p>
   domainName: string
-<p>
 }
    </td>
    <td>Connect to a PEAP wifi network, using a username and credentials. Password in this case is the hashed version of the user password, obtained using:
@@ -164,13 +159,9 @@ and autorouting of traffic to 'domainName' to the ip address of this computer.
    <td>Javascript Object:
 <p>
 {
-<p>
   monitorPin: number,
-<p>
   controlPin: number,
-<p>
   delayTime: number,
-<p>
 }
    </td>
    <td>Configures a battery-backup enabled softshutdown. 'delayTime' milliseconds after the computer sees the voltage on 'monitorPin' go to zero, the computer will shutdown, and cause 'controlPin' to go high. Pin numbers are specified in BCM pin numbers.
@@ -284,11 +275,8 @@ _<span style="text-decoration:underline;">Window Config Object for app.js</span>
    <td>Object:
 <p>
 {
-<p>
   height: number,
-<p>
   width: number
-<p>
 }
    </td>
    <td>Size, in pixels to draw the window, if not fullscreen.
@@ -300,11 +288,8 @@ _<span style="text-decoration:underline;">Window Config Object for app.js</span>
    <td>Object:
 <p>
 {
-<p>
   x: number,
-<p>
   y: number
-<p>
 }
    </td>
    <td>Coordinates, in pixels, to display the window.
