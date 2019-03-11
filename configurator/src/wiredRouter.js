@@ -1,18 +1,18 @@
 obtain(['fs', `${__dirname}/utils.js`, 'child_process'], (fs, { copyConfigFile }, { exec })=> {
   var writeInterfaceFile = ()=> {
-    copyConfigFile(`${__dirname}/../configFiles/interfaces_wired`, '/etc/network/interfaces');
+    copyConfigFile(`${__dirname}/../templates/interfaces_wired`, '/etc/network/interfaces');
   };
 
   var writeHostsFile = (domainName)=> {
-    copyConfigFile(`${__dirname}/../configFiles/hosts_wired`, '/etc/hosts', { DOMAIN_NAME: domainName });
+    copyConfigFile(`${__dirname}/../templates/hosts_wired`, '/etc/hosts', { DOMAIN_NAME: domainName });
   };
 
   var writeDhcpcdConfFile = ()=> {
-    copyConfigFile(`${__dirname}/../configFiles/dhcpcd_wired.conf`, '/etc/dhcpcd.conf');
+    copyConfigFile(`${__dirname}/../templates/dhcpcd_wired.conf`, '/etc/dhcpcd.conf');
   };
 
   var writeDnsmasqConfFile = (domainName)=> {
-    copyConfigFile(`${__dirname}/../configFiles/dnsmasq_wired.conf`, '/etc/dnsmasq.conf', { DOMAIN_NAME: domainName });
+    copyConfigFile(`${__dirname}/../templates/dnsmasq_wired.conf`, '/etc/dnsmasq.conf', { DOMAIN_NAME: domainName });
   };
 
   exports.configure = (cfgObj)=> {

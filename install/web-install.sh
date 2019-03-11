@@ -38,6 +38,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ACCOUNT="scimusmn"
 REPO="SteleLite-AppTemplate"
 
+declare -A flags
+declare -A booleans
+args=()
+
 while [ "$1" ];
 do
     arg=$1
