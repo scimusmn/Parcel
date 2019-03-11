@@ -35,7 +35,7 @@ do
       shift
       rev=$(echo "$arg" | rev) #reverse the string
 
-      #if the next opt is not empty, or begins with a '-', or this opt ends in a ':'
+      #if the next opt is empty, or begins with a '-', or this opt ends in a ':'
       if [ -z "$1" ] || [ "${1:0:1}" == "-" ] || [ "${rev:0:1}" == ":" ]
       then
         # it is a boolean flag
@@ -73,6 +73,9 @@ fi
 
 
 echo "Logging to ${OUTPUT}" > $OUTPUT
+
+echo "Using $ACCOUNT as the github account" > $OUTPUT
+echo "and $REPO as the github repo" > $OUTPUT
 
 #clear the log file
 cat /dev/null > stele_install.log
