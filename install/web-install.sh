@@ -92,6 +92,9 @@ fi
 
 sudo mkdir -p /usr/local/src/setup
 
+# Permissions are wonky somewhere. Maybe because this directory is owned by root. -Charles
+#sudo chown pi /usr/local/src/setup
+
 sudo chmod 777 /usr/local/src/setup
 
 cd /usr/local/src/setup
