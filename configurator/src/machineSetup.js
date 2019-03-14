@@ -20,6 +20,7 @@ var firstRun = false;
 
 var obs = [
   `${__dirname}/hotspot.js`,
+  `${__dirname}/wiredRouter.js`,
   `${__dirname}/wifi.js`,
   `${__dirname}/staticIP.js`,
   `${__dirname}/preventSleep.js`,
@@ -33,7 +34,7 @@ var obs = [
   'os',
 ];
 
-obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, fs, { keyboards: kbds }, usbDrive, { exec, execSync }, os)=> {
+obtain(obs, (hotspot, wiredRouter, wifi, staticIP, preventSleep, soft, { config }, services, fs, { keyboards: kbds }, usbDrive, { exec, execSync }, os)=> {
 
   if (process.platform == 'linux' && fs.existsSync('/boot/SAFEMODE')) {
     console.log('Starting in safemode; exiting application.');
@@ -122,6 +123,12 @@ obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, 
       curCfg.wifiHotspot = pfg.wifiHotspot;
     }
 
+    if (pfg.wiredRouter && !configsMatch(curCfg.wiredRouter, pfg.wiredRouter)) {
+      console.log('Configuring wired router...');
+      wiredRouter.configure(pfg.wiredRouter);
+      curCfg.wiredRouter = pfg.wiredRouter;
+    }
+
     if (pfg.wifi && !configsMatch(curCfg.wifi, pfg.wifi)) {
       console.log('Configuring wifi...');
       wifi.configure(pfg.wifi);
@@ -148,12 +155,15 @@ obtain(obs, (hotspot, wifi, staticIP, preventSleep, soft, { config }, services, 
 
     if (!configsMatch(curCfg.autostart, pfg.autostart)) {
       console.log('Configuring electron autostart...');
-      if (pfg.autostart) services.configure(
-        'electron',
-        'Autostart main application',
-        `/usr/bin/startx ${bundleRoot}/node_modules/.bin/electron ${bundleRoot}`
-      );
-      else if (curCfg.autostart) services.disable('electron');
+
+      if (pfg.autostart) {
+        var env = ((pfg.autostart.env) ? pfg.autostart.env + ' ' : '');
+        services.configure(
+          'electron',
+          'Autostart main application',
+          `${env}/usr/bin/startx ${bundleRoot}/node_modules/.bin/electron ${bundleRoot}`
+        );
+      } else if (curCfg.autostart) services.disable('electron');
       curCfg.autostart = pfg.autostart;
     }
 

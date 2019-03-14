@@ -34,7 +34,7 @@ obtain(obtains, (drivelist, { EventEmitter }, { exec, execSync })=> {
                 this.emit('connected', drive);
                 if (drive.mountpoints.length) this.emit('mounted', drive);
               } else {
-                if (exists && !exists.mountpoints.length && drive.mountpoints.length) {
+                if (exists && !exists.mountpoints.length && drive.mountpoints.length && process.platform != 'linux') {
                   this.emit('mounted', drive);
                 }
               }

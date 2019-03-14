@@ -38,7 +38,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ACCOUNT="scimusmn"
 REPO="SteleLite-AppTemplate"
 
-# special thanks to jozsef morrissey: https://stackoverflow.com/questions/14447406/
 declare -A flags
 declare -A booleans
 args=()
@@ -53,7 +52,7 @@ do
       shift
       rev=$(echo "$arg" | rev) #reverse the string
 
-      #if the next opt is not empty, or begins with a '-', or this opt ends in a ':'
+      #if the next opt is empty, or begins with a '-', or this opt ends in a ':'
       if [ -z "$1" ] || [ "${1:0:1}" == "-" ] || [ "${rev:0:1}" == ":" ]
       then
         # it is a boolean flag
@@ -73,21 +72,12 @@ do
     fi
 done
 
-if [ ! -z "${flags["u"]}" ]; then
-  ACCOUNT=${flags["u"]}
-  echo "Account is $ACCOUNT"
+if [ ! -z "${flags['a']}" ]; then
+  ACCOUNT="${flags['a']}"
 fi
 
-if [ ! -z "${flags["r"]}" ]; then
-  REPO=${flags["r"]}
-  echo "Repo is $REPO"
-fi
-
-DEBUG=""
-
-if [[ "${booleans["-debug"]}" = true ]]; then
-  echo -e "\nStarting debug mode."
-  DEBUG=" --debug"
+if [ ! -z "${flags['r']}" ]; then
+  REPO="${flags['r']}"
 fi
 
 sudo mkdir -p /usr/local/src/setup
@@ -105,4 +95,5 @@ curl -sL "https://raw.githubusercontent.com/scimusmn/stele-lite/master/install/m
 
 chmod 777 ./install.sh
 
-./install.sh -s /usr/local/src/setup -u "$ACCOUNT" -r "$REPO" $DEBUG
+./install.sh -r $REPO -a $ACCOUNT "$@" -s "/usr/local/src/setup"
+#-u "$ACCOUNT" -r "$REPO" $DEBUG

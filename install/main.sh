@@ -5,6 +5,22 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 OUTPUT="${HOME}/stele_install.log"
 
+OPTS="$@"
+
+ACCOUNT=''
+REPO=''
+SETUP_DIR="/boot/setup"
+
+# while getopts ':a:r:s:d' option; do
+#   case "${option}"
+#   in
+#   a) ACCOUNT=${OPTARG};;
+#   r) REPO=${OPTARG};;
+#   s) SETUP_DIR=${OPTARG};;
+#   d) OUTPUT="/dev/stdout";;
+#   esac
+# done
+
 declare -A flags
 declare -A booleans
 args=()
@@ -19,7 +35,7 @@ do
       shift
       rev=$(echo "$arg" | rev) #reverse the string
 
-      #if the next opt is not empty, or begins with a '-', or this opt ends in a ':'
+      #if the next opt is empty, or begins with a '-', or this opt ends in a ':'
       if [ -z "$1" ] || [ "${1:0:1}" == "-" ] || [ "${rev:0:1}" == ":" ]
       then
         # it is a boolean flag
@@ -39,10 +55,27 @@ do
     fi
 done
 
-if [[  "${booleans["-debug"]}" = true ]]; then
-  echo -e "\nRunning in debug mode."
+if [ ! -z "${flags['a']}" ]; then
+  ACCOUNT="${flags['a']}"
+fi
+
+if [ ! -z "${flags['r']}" ]; then
+  REPO="${flags['r']}"
+fi
+
+if [ ! -z "${flags['s']}" ]; then
+  SETUP_DIR="${flags['s']}"
+fi
+
+if [ "${booleans['-debug']}" = true ]; then
   OUTPUT="/dev/stdout"
 fi
+
+
+echo "Logging to ${OUTPUT}" > $OUTPUT
+
+echo "Using $ACCOUNT as the github account" > $OUTPUT
+echo "and $REPO as the github repo" > $OUTPUT
 
 #clear the log file
 cat /dev/null > stele_install.log
@@ -158,10 +191,6 @@ sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install libgtk-3-0 > ${OUTPUT} 
 
 sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install git libudev-dev > ${OUTPUT} 2>&1
 
-#sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install xauth > ${OUTPUT} 2>&1
-
-#sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install xorg > ${OUTPUT} 2>&1
-
 sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install build-essential hostapd dnsmasq network-manager xserver-xorg xinit xserver-xorg-video-fbdev libxss1 libgconf-2-4 libnss3 git nodejs libgtk2.0-0 libxtst6  > ${OUTPUT} 2>&1
 
 sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install libasound2 > ${OUTPUT} 2>&1
@@ -206,30 +235,30 @@ done
 
 doneWorking
 
-echo  -e "\n** Checking if ${flags['r']} is installed..."
+echo  -e "\n** Checking if ${REPO} is installed..."
 
 
-if [ -d "app" ] && [[ ! $(cd app; git remote -v) =~ "https://github.com/${flags['u']}/${flags['r']}" ]]; then
+if [ -d "app" ] && [[ ! $(cd app; git remote -v) =~ "https://github.com/${ACCOUNT}/${REPO}" ]]; then
   sudo rm -rf app
 fi
 
 if [[ ! -d "app" ]]; then
-  echo  -e "\n** Installing ${flags['r']}..."
+  echo  -e "\n** Installing ${REPO}..."
 
   startWorking
 
   waitForNetwork
 
-  git clone  --recurse-submodules "https://github.com/${flags['u']}/${flags['r']}" app > /dev/null 2>&1
+  git clone  --recurse-submodules "https://github.com/${ACCOUNT}/${REPO}" app > /dev/null 2>&1
 
   doneWorking
 
-  if [[ -f "app/aux_install.sh" ]]; then
-    bash app/aux_install.sh $OUTPUT
+  if [[ -f "app/config/install.sh" ]]; then
+    bash app/config/install.sh $OPTS -o $OUTPUT
   fi
   cd app
 
-  echo  -e "\n** Installing node dependencies for ${flags['r']}:"
+  echo  -e "\n** Installing node dependencies for ${REPO}:"
 
   startWorking
   while [[ $(npm i 2> >( tee -a ${OUTPUT} | grep -o -i -m 1 'ERR!')) = 'ERR!' ]]; do
@@ -253,12 +282,6 @@ cd configurator
 
 # Run the configurator in config-only mode, so that it exits once it completes.
 
-SETUP_DIR="/boot/setup"
-if [[ ! -z "${flags["s"]}" ]]; then
-  SETUP_DIR="${flags["s"]}"
-fi
-
-#--repo "${flags["r"]}" --account "${flags["u"]}"
 sudo node install.js --config-only --setup-dir "${SETUP_DIR}" --user "$USER"
 
 # Restart the computer after the script finishes.
