@@ -103,6 +103,8 @@ obtain(['path', 'url', 'child_process', 'os'], (path, url, { execSync }, os)=> {
 
   function makeWindows() {
 
+    // if we have multiple windows specified in the config, try to pair them
+    // with a display
     if (config.windows) {
       var binds = {};
       if (fs.existsSync(DISPLAY_BINDING_PATH)) {
@@ -120,6 +122,7 @@ obtain(['path', 'url', 'child_process', 'os'], (path, url, { execSync }, os)=> {
 
       var displays = electron.screen.getAllDisplays();
 
+      // call this to relocate windows to their proper positions.
       var refixWindows = ()=> {
         config.windows.forEach(win=> {
           if (windows[win.label]) {
@@ -141,12 +144,15 @@ obtain(['path', 'url', 'child_process', 'os'], (path, url, { execSync }, os)=> {
         });
       };
 
+      // for each attached display,
       displays.forEach(display=> {
         if (config.windows.find(wind=>wind.displayId !== undefined && display.id == wind.displayId)) {
+          // find a window with a matching display id, and create a window for it.
           config.windows.forEach(wind=> {
             if (display.id == wind.displayId) createWindowForDisplay(display, wind);
           });
         } else {
+          //otherwise create a window asking to make a window for that display
           windows[display.id] = createWindow({
             fullscreen: false,
             devTools: false,
@@ -164,12 +170,16 @@ obtain(['path', 'url', 'child_process', 'os'], (path, url, { execSync }, os)=> {
         }
       });
 
+      // if we receive a message from one of the windows asking to talk to another
+      // forward the message on
       ipcMain.on('interwindow', (evt, arg)=> {
         arg.data.from = evt.sender.label;
         arg.data.self = arg.target;
         if (windows[arg.target]) windows[arg.target].webContents.send(arg.channel, arg.data);
       });
 
+      // if we receive a message from a newMonitor window asking for a specific window,
+      // save the window choice for that display id to the bindings file.
       ipcMain.on('window-select', (evt, arg)=> {
 
         var display = displays.find(disp=> disp.id == evt.sender.label);
@@ -184,15 +194,19 @@ obtain(['path', 'url', 'child_process', 'os'], (path, url, { execSync }, os)=> {
         windows[evt.sender.label].close();
       });
 
+      // if we see a monitor added to the computer, check to see if there are any windows for it
       electron.screen.on('display-added', (evt, display)=> {
 
         config.windows.forEach(wind=> {
           if (display.id == wind.displayId) createWindowForDisplay(display, wind);
         });
 
+        // and fix any display errors we may have had.
         refixWindows();
       });
 
+
+      // if we remove a monitor, destroy any windows that were meant for it
       electron.screen.on('display-removed', (evt, display)=> {
 
         var wind = config.windows.find(win => display.id == win.displayId);
@@ -205,6 +219,9 @@ obtain(['path', 'url', 'child_process', 'os'], (path, url, { execSync }, os)=> {
 
       });
     } else {
+      // if we don't have any windows defined in the config file,
+      // make one with the default location (app/local/index.html)
+
       var display = electron.screen.getPrimaryDisplay();
 
       var wind = {
@@ -226,17 +243,21 @@ obtain(['path', 'url', 'child_process', 'os'], (path, url, { execSync }, os)=> {
   app.on('ready', ()=> {
     var launched = false;
     var watcher = null;
-    if (fs.existsSync(appRoot + '/current/appReady')) {
-      makeWindows();
-      launched = true;
-    } else watcher = fs.watch(appRoot + '/current', (eventType, fname)=> {
-      console.log(eventType);
-      if (!launched && eventType == 'rename' && fname == 'appReady') {
-        makeWindows();
-        launched = true;
-        if (watcher) watcher.close();
-      }
-    });
+    makeWindows();
+    launched = true;
+
+    // this delayed starting the app if not everything was installed, unnecessary
+    // if (fs.existsSync(appRoot + '/current/appReady')) {
+    //   makeWindows();
+    //   launched = true;
+    // } else watcher = fs.watch(appRoot + '/current', (eventType, fname)=> {
+    //   console.log(eventType);
+    //   if (!launched && eventType == 'rename' && fname == 'appReady') {
+    //     makeWindows();
+    //     launched = true;
+    //     if (watcher) watcher.close();
+    //   }
+    // });
   });
 
   // Quit when all windows are closed.
