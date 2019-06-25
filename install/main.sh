@@ -67,15 +67,15 @@ if [ ! -z "${flags['s']}" ]; then
   SETUP_DIR="${flags['s']}"
 fi
 
-if [ "${booleans['-debug']}" = true ]; then
+if [ "${booleans['V']}" = true ]; then
   OUTPUT="/dev/stdout"
 fi
 
 
-echo "Logging to ${OUTPUT}" > $OUTPUT
+echo "Logging to ${OUTPUT}" >> $OUTPUT
 
-echo "Using $ACCOUNT as the github account" > $OUTPUT
-echo "and $REPO as the github repo" > $OUTPUT
+echo "Using $ACCOUNT as the github account" >> $OUTPUT
+echo "and $REPO as the github repo" >> $OUTPUT
 
 #clear the log file
 cat /dev/null > stele_install.log
@@ -183,17 +183,17 @@ echo -e "\n** Installing node and system dependencies..."
 
 startWorking
 
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - > ${OUTPUT} 2>&1
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - >> ${OUTPUT} 2>&1
 
-[ $(uname --m) != "x86_64" ] && sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install xserver-xorg-video-fbturbo > ${OUTPUT} 2>&1
+[ $(uname --m) != "x86_64" ] && sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install xserver-xorg-video-fbturbo >> ${OUTPUT} 2>&1
 
-sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install libgtk-3-0 > ${OUTPUT} 2>&1
+sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install libgtk-3-0 >> ${OUTPUT} 2>&1
 
-sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install git libudev-dev > ${OUTPUT} 2>&1
+sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install git libudev-dev >> ${OUTPUT} 2>&1
 
-sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install build-essential hostapd dnsmasq network-manager xserver-xorg xinit xserver-xorg-video-fbdev libxss1 libgconf-2-4 libnss3 git nodejs libgtk2.0-0 libxtst6  > ${OUTPUT} 2>&1
+sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install build-essential hostapd dnsmasq network-manager xserver-xorg xinit xserver-xorg-video-fbdev libxss1 libgconf-2-4 libnss3 git nodejs libgtk2.0-0 libxtst6  >> ${OUTPUT} 2>&1
 
-sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install libasound2 > ${OUTPUT} 2>&1
+sudo apt-get -qq -o=Dpkg::Use-Pty=0 --assume-yes install libasound2 >> ${OUTPUT} 2>&1
 
 doneWorking
 
